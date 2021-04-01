@@ -1,0 +1,10 @@
+.homepage-mainheadeing h1{
+    display: flex;
+    justify-content: center;
+    font-size: 50px;
+    margin-top: 50px;
+    padding-bottom: 40px;
+}
+.homepagecontainer{
+padding:0px 200px
+}

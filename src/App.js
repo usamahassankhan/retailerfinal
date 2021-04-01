@@ -1,25 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
-
+import  Homepage from './Homepage/index' ;
+import  Signup from './Homepage/Signup/Signup' ;
+import { HashRouter } from "react-router-dom";
+import Storeform from './Storeform';
+import {BrowserRouter as Router, Switch, Route } from "react-router-dom";
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return (  
+<>
+  {/* <Homepage/> */}
+  {/* <HashRouter> */}
+    <Router>
+  <Switch>
+  <Route path="/" exact component={Homepage} />
+  <Route path="/signup" exact component={Signup} />
+  <Route path="/storeform" exact component={Storeform} />
+  </Switch>
+  </Router>
+  {/* </HashRouter> */}
+  </>
+  )
 }
 
 export default App;
