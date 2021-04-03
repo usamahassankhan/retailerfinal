@@ -72,7 +72,7 @@ const loginauth=(e)=>{
   return (
       <div className ="homepagecontainer">
           <div className="homepage-mainheadeing">
-              <h1 >IBUY RETAILER APP</h1>
+              {/* <h1 >IBUY RETAILER APP</h1> */}
 
           </div>
     <Grid container component="main" className={classes.root}>

@@ -1,8 +1,8 @@
-.homepage-mainheadeing h1{
+.homepage-mainheadeing{
     display: flex;
     justify-content: center;
     font-size: 50px;
-    margin-top: 50px;
+    margin-top: 10px;
     padding-bottom: 40px;
 }
 .homepagecontainer{

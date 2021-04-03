@@ -67,30 +67,28 @@ const useStyles = makeStyles((theme) => ({
 export default function Storeform() {
   const classes = useStyles();
   const history = useHistory();
-  const [retailer, setRetailer] = useState();
-  const [banner, setBanner] = useState();
-  const [storenumber, setStorenumber] = useState();
-  const [address, setAddress] = useState();
+
+  const [targetSpend, setTargetspend] = useState();
+  const [cashbackoffer, setCashbackoffer] = useState();
+  const [maxshoppers, setMaxshoppers] = useState();
   const [planId, setPlanId] = useState();
-  const [planstartdate, setPlanstartdate] = useState();
-  const [endplandate, setPlanenddate] = useState();
+
 
   console.log(
-    retailer,
-    banner,
-    storenumber,
-    address,
+    targetSpend,
+    cashbackoffer,
+    
+    maxshoppers,
     planId,
-    planstartdate,
-    endplandate
+  
   );
 
   return (
-    <div className="storepagecontainer">
-      <div className="storepage-mainheadeing">
+    <div className="plancontainer">
+      <div className="plan-mainheadeing">
         {/* <h1>IBUY RETAILER APP</h1> */}
       </div>
-      {/* <h3>STORE INFORMATION FORM</h3> */}
+      {/* <h3>PLAN INFORMATION FORM</h3> */}
 
       <Grid container component="main" className={classes.root}>
         <CssBaseline />
@@ -101,70 +99,10 @@ export default function Storeform() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              STORE INFORMATION FORM
+             PLAN INFORMATION FORM
             </Typography>
             <form className={classes.form} noValidate>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="retailer"
-                label="Retailer/Partner Name"
-                name="retailer"
-                autoComplete=""
-                autoFocus
-                onChange={(e) => setRetailer(e.target.value)}
-                SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
-                    //   root: classes.selectRoot,
-                      input: classes.input
-                    }
-                  }}
-                className={classes.input}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="banner"
-                label="Banner Name"
-                name="banner"
-                autoComplete=""
-                autoFocus
-                onChange={(e) => setBanner(e.target.value)}
-                SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
-                    //   root: classes.selectRoot,
-                      input2: classes.input2
-                    }
-                  }}
-                className={classes.input2}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Store Number"
-                name="storenumber"
-                autoComplete=""
-                autoFocus
-                onChange={(e) => setStorenumber(e.target.value)}
-                SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
-                    //   root: classes.selectRoot,
-                      input: classes.input
-                    }
-                  }}
-                className={classes.input}
-              />
-                    <TextField
+            <TextField
                 variant="outlined"
                 margin="normal"
                 required
@@ -175,71 +113,50 @@ export default function Storeform() {
                 autoComplete=""
                 autoFocus
                 onChange={(e) => setPlanId(e.target.value)}
-                SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
-                    //   root: classes.selectRoot,
-                      input2: classes.input2
-                    }
-                  }}
-                className={classes.input2}
+               
               />
               <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                id="address"
-                label="Store Address"
-                name="address"
+                id="retailer"
+                label="TARGET SPEND"
+                name="TARGETSPEND"
                 autoComplete=""
                 autoFocus
-                onChange={(e) => setAddress(e.target.value)}
-        
-              />
-        
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="planstartdate"
-                label="Plan Start Date"
-                type="date"
-                id="planstartdate"
-                defaultValue="2021-05-21"
-                autoComplete="date"
-                onChange={(e) => setPlanstartdate(e.target.value)}
-                SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
-                    //   root: classes.selectRoot,
-                      input: classes.input
-                    }
-                  }}
-                className={classes.input}
+                onChange={(e) => setTargetspend(e.target.value)}
+            
               />
               <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                name="planenddate"
-                label="Plan End Date"
-                type="date"
-                id="planenddate"
-                defaultValue="2021-12-24"
-                autoComplete="date"
-                onChange={(e) => setPlanenddate(e.target.value)}
-                SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
-                    //   root: classes.selectRoot,
-                      input2: classes.input2
-                    }
-                  }}
-                className={classes.input2}
+                id="CASHBACK OFFER"
+                label="CASHBACK OFFER"
+                name="CASHBACK OFFER"
+                autoComplete=""
+                autoFocus
+                onChange={(e) => setCashbackoffer(e.target.value)}
+          
               />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="MAX SHOPPERS"
+                label="MAX SHOPPERS"
+                name="MAXSHOPPERS"
+                autoComplete=""
+                autoFocus
+                onChange={(e) => setMaxshoppers(e.target.value)}
+             
+              />
+                    
+   
+       
               {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"

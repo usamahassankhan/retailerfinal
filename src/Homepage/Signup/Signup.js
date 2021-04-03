@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: 'center',
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    margin: theme.spacing(5, 4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -93,9 +93,9 @@ else{
 }
 }
   return (
-      <div className ="homepagecontainer">
-          <div className="homepage-mainheadeing">
-              <h1 >IBUY RETAILER APP</h1>
+      <div className ="signupcontainer">
+          <div className="signup-mainheadeing">
+              {/* <h1 >IBUY RETAILER APP</h1> */}
 
           </div>
     <Grid container component="main" className={classes.root}>

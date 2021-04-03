@@ -1,17 +1,17 @@
-.storepage-mainheadeing{
+.plan-mainheadeing{
     display: flex;
     justify-content: center;
     font-size: 50px;
-    margin-top: 10px;
+    margin-top: 20px;
     padding-bottom: 20px;
 }
-.storepagecontainer{
+.plancontainer{
     
 padding:0px 200px;
 
 
 }
-.storepagecontainer h3{
+.plancontainer h3{
     display: flex;
     justify-content: center;
     font-size: 30px;
