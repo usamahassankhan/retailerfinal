@@ -15,11 +15,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import store from './../../images/store.jpg'
 import './Signup.css';
 import {useHistory} from 'react-router-dom';
-import {auth} from './../../Firebase/Firebase';
+import {auth} from '../../Firebase/Firebase';
 const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '70vh',
-  },
+  // root: {
+  //   height: '70vh',
+  // },
   image: {
     // backgroundImage: 'url(https://source.unsplash.com/random)',
     backgroundImage: `url(${store})`,
@@ -37,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor:"#094457",
+    color:"white"
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -68,6 +69,7 @@ auth.createUserWithEmailAndPassword(email, password)
     // Signed in 
     var user = userCredential.user;
     console.log("user",user)
+    alert("Sign Up Succeess")
     // ...
   })
   .catch((error) => {

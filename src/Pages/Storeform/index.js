@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,23 +12,76 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import store from "./../images/store.jpg";
-import { auth } from "./../Firebase/Firebase";
+import store from "./../../images/store.jpg";
+import { auth } from "../../Firebase/Firebase";
+ import db from "../../Firebase/Firebase";
 import { useHistory } from "react-router-dom";
 import "./index.css";
-
+import { motion, AnimatePresence } from "framer-motion"
 const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "50vh",
-  },
+  // root: {
+  //   height: "50vh",
+  // },
   input: {
  
     width: 240,
-    paddingRight:10
+    paddingRight:10,
+    ['@media (max-width:860px)']: { // eslint-disable-line no-useless-computed-key
+      width:400
+    },
+    ['@media (max-width:1133px) and (min-width:960px )']: { 
+      width:400
+    },
+    ['@media (max-width:470px)'] : { // eslint-disable-line no-useless-computed-key
+      width:300
+    },
+    ['@media (max-width:360px)'] : { // eslint-disable-line no-useless-computed-key
+      width:250
+    }  ,
+    ['@media (max-width:320px)'] : { // eslint-disable-line no-useless-computed-key
+      width:200
+    }
   },
   input2: {
  
     width: 250,
+    ['@media (max-width:860px)']: {
+      width:400
+    },
+    ['@media (max-width:470px)'] : { // eslint-disable-line no-useless-computed-key
+      width:300
+    },
+    ['@media (max-width:360px)'] : { // eslint-disable-line no-useless-computed-key
+      width:250
+    }  ,
+    ['@media (max-width:320px)'] : { // eslint-disable-line no-useless-computed-key
+      width:200
+    },
+    ['@media (max-width:1133px) and (min-width:960px )']: { 
+      width:400
+    },
+
+  },
+  input3: {
+ 
+    width: 480,
+    ['@media (max-width:860px)']: {
+      width:400
+    },
+    ['@media (max-width:470px)'] : { // eslint-disable-line no-useless-computed-key
+      width:300
+    },
+    ['@media (max-width:360px)'] : { // eslint-disable-line no-useless-computed-key
+      width:250
+    }
+    ,
+    ['@media (max-width:320px)'] : { // eslint-disable-line no-useless-computed-key
+      width:200
+    },
+    ['@media (max-width:1133px) and (min-width:960px )']: { 
+      width:400
+    },
+
 
   },
  
@@ -53,7 +106,8 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor:"#094457",
+    color:"white"
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -64,7 +118,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function Storeform() {
+
   const classes = useStyles();
   const history = useHistory();
   const [retailer, setRetailer] = useState();
@@ -74,6 +130,7 @@ export default function Storeform() {
   const [planId, setPlanId] = useState();
   const [planstartdate, setPlanstartdate] = useState();
   const [endplandate, setPlanenddate] = useState();
+  const[currentuser,setCurrentuser]=useState();
 
   console.log(
     retailer,
@@ -84,6 +141,41 @@ export default function Storeform() {
     planstartdate,
     endplandate
   );
+  useEffect(() => {
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+    
+    setCurrentuser({user})
+    
+ 
+      } else {
+        // No user is signed in.
+        console.log("nouser",user)
+        setCurrentuser("")
+      }
+    })
+   
+  },[])
+const submitstore=(e)=>{
+  e.preventDefault();
+  db.collection("store").doc(currentuser.user.uid).set({
+    name: retailer,
+    banner: banner,
+    storenumber: storenumber,
+    address:address,
+    planId:planId,
+    planstartdate:planstartdate,
+    endplandate:endplandate
+})
+.then(() => {
+    console.log("Document successfully written!");
+})
+.catch((error) => {
+    console.error("Error writing document: ", error);
+});
+}
+
+console.log("useraja",currentuser?.user.uid);
 
   return (
     <div className="storepagecontainer">
@@ -95,15 +187,15 @@ export default function Storeform() {
       <Grid container component="main" className={classes.root}>
         <CssBaseline />
         <Grid item xs={false} sm={4} md={6} className={classes.image} />
-        <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
+        <Grid item xs={12} sm={8} md={6}  component={Paper} elevation={6} square>
           <div className={classes.paper}>
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              STORE INFORMATION FORM
+              STORE INFORMATION
             </Typography>
-            <form className={classes.form} noValidate>
+            <form className={classes.form} noValidate onSubmit={e=>submitstore(e)}>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -195,6 +287,21 @@ export default function Storeform() {
                 autoComplete=""
                 autoFocus
                 onChange={(e) => setAddress(e.target.value)}
+                // SelectProps={{
+                //   // className: classes.selectRoot,
+                //   classes: {
+                //   //   root: classes.selectRoot,
+                //     input3: classes.input3
+                //   }
+                // }}
+                SelectProps={{
+                  // className: classes.selectRoot,
+                  classes: {
+                  //   root: classes.selectRoot,
+                    input3: classes.input3
+                  }
+                }}
+              className={classes.input3}
         
               />
         
@@ -250,29 +357,19 @@ export default function Storeform() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                //   onClick={loginauth}
+                  
               >
                 SUBMIT
               </Button>
               <Grid container>
-                {/* <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid> */}
-                {/* <Grid item>
-                  <Link variant="body2" style={{ textAlign: "right" }}>
-                    <p onClick={() => history.push("./signup")}>
-                      Don't have an account? Sign Up
-                    </p>
-                  </Link>
-                </Grid> */}
+         
               </Grid>
               <Box mt={5}></Box>
             </form>
           </div>
         </Grid>
       </Grid>
+    
     </div>
   );
 }

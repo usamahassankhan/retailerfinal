@@ -12,15 +12,15 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import store from "./../images/store.jpg";
-import { auth } from "./../Firebase/Firebase";
+import plan from "./../../images/store.jpg";
+import { auth } from "../../Firebase/Firebase";
 import { useHistory } from "react-router-dom";
 import "./index.css";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "50vh",
-  },
+  // root: {
+  //   height: "50vh",
+  // },
   input: {
  
     width: 240,
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
   image: {
     // backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundImage: `url(${store})`,
+    backgroundImage: `url(${plan})`,
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -53,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor:"#094457",
+    color:"white"
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -99,7 +100,7 @@ export default function Storeform() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-             PLAN INFORMATION FORM
+             PLAN INFORMATION
             </Typography>
             <form className={classes.form} noValidate>
             <TextField

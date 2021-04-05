@@ -1,0 +1,14 @@
+.makeStyles-avatar-41 {
+    margin: 8px;
+    background-color: #094457 !important;}
+.MuiButton-containedPrimary{
+    background-color: #094457 !important;}
+    .MuiButton-containedPrimary:hover{
+zoom: 1.04;
+    }
+    .modalbtn{
+        padding:5px 20px;
+        background-color:  #094457;
+        color:white;
+        border-radius: 10px;
+    }
