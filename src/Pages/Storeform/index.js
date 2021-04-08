@@ -175,7 +175,7 @@ const submitstore=(e)=>{
 });
 }
 
-console.log("useraja",currentuser?.user.uid);
+// console.log("useraja",currentuser?.user.uid);
 
   return (
     <div className="storepagecontainer">

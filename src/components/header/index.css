@@ -18,3 +18,14 @@
     font-size: 25px !important;
   
 }
+/* .MAINHEAD1{
+    font-size: 15px !important;
+    padding:10px;
+    color:white
+} */
+    .nav-item a{
+        font-size: 15px !important;
+        padding:10px;
+        color:white
+      
+    }

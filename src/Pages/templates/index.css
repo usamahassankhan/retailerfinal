@@ -1,0 +1,35 @@
+.wao{
+    padding:50px
+}
+.MuiToolbar-regular {
+    min-height: 64px;
+    background-color: #094457;
+    color:white
+}
+
+.MuiSelect-icon{
+color:white !important
+}
+.templatebtn button{
+    padding:10px;
+    border-radius: 10px;
+    margin: 10px;
+    background-color:#094457 ;
+    color: white;
+
+}
+.templatelast button{
+    padding:10px;
+    border-radius: 10px;
+    margin: 10px;
+    background-color:#094457 ;
+    color: white;
+
+}
+.templatelast{
+text-align: center;
+}
+.templatebtn{
+    display: flex;
+    justify-content: flex-end;
+}

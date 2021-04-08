@@ -68,9 +68,13 @@ const loginauth=(e)=>{
   .then((userCredential) => {
     // Signed in
     var user = userCredential.user;
-    console.log("login success",user)
+    console.log("login success",user.uid)
     alert("login succeess")
-    history.push("/storeform")
+    history.push("/templates")
+    localStorage.setItem('rememberMe',true);
+    localStorage.setItem("myid",user.uid)
+    window.location.reload(); 
+    
     // ...
   })
   .catch((error) => {

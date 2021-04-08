@@ -13,10 +13,15 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import plan from "./../../images/store.jpg";
+import Select from '@material-ui/core/Select';
 import { auth } from "../../Firebase/Firebase";
+import db from "../../Firebase/Firebase";
 import { useHistory } from "react-router-dom";
 import "./index.css";
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
 
+import FormControl from '@material-ui/core/FormControl';
 const useStyles = makeStyles((theme) => ({
   // root: {
   //   height: "50vh",
@@ -56,6 +61,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:"#094457",
     color:"white"
   },
+  // formControl: {
+  //   margin: theme.spacing(1),
+  //   minWidth: 490,
+  // },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
@@ -72,18 +81,57 @@ export default function Storeform() {
   const [targetSpend, setTargetspend] = useState();
   const [cashbackoffer, setCashbackoffer] = useState();
   const [maxshoppers, setMaxshoppers] = useState();
-  const [planId, setPlanId] = useState();
-
+  const [plantemplateid, setPlantemplateid] = useState();
+  const [plantemplatename, setPlantemplatename] = useState();
 
   console.log(
     targetSpend,
     cashbackoffer,
     
     maxshoppers,
-    planId,
+    plantemplateid,
+    plantemplatename
   
   );
+  
 
+  const [open, setOpen] = React.useState(false);
+  const [age, setAge] = React.useState('');
+  const [opened, setOpened] = React.useState(false);
+  const myid=localStorage.getItem("myid");
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
+  const handleClosed = () => {
+    setOpened(false);
+  };
+
+  const handleOpened = () => {
+    setOpened(true);
+  };
+    const sendtemplate = (e) => {
+        e.preventDefault()
+        db.collection("template").doc(myid).set({
+          targetSpend,
+          cashbackoffer,
+          
+          maxshoppers,
+          plantemplateid,
+          plantemplatename
+      })
+      .then(() => {
+          console.log("Document successfully written!");
+      })
+      .catch((error) => {
+          console.error("Error writing document: ", error);
+      });
+    };
+  
+    // const handleClose = () => {
+    //   setOpened(false);
+    // };
   return (
     <div className="plancontainer">
       <div className="plan-mainheadeing">
@@ -100,49 +148,36 @@ export default function Storeform() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-             PLAN INFORMATION
+            Create New Template
             </Typography>
-            <form className={classes.form} noValidate>
+            <form className={classes.form} noValidate onSubmit={sendtemplate}>
             <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                id="planid"
-                label="PLAN ID"
+                id="planname"
+                label="PLAN TEMPLATE NAME"
                 name="ID"
                 autoComplete=""
                 autoFocus
-                onChange={(e) => setPlanId(e.target.value)}
+                onChange={(e) => setPlantemplatename(e.target.value)}
                
               />
-              <TextField
+                  <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                id="retailer"
-                label="TARGET SPEND"
-                name="TARGETSPEND"
+                id="plantemplateid"
+                label="PLAN TEMPLATE ID"
+                name="ID"
                 autoComplete=""
                 autoFocus
-                onChange={(e) => setTargetspend(e.target.value)}
-            
+                onChange={(e) => setPlantemplateid(e.target.value)}
+               
               />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="CASHBACK OFFER"
-                label="CASHBACK OFFER"
-                name="CASHBACK OFFER"
-                autoComplete=""
-                autoFocus
-                onChange={(e) => setCashbackoffer(e.target.value)}
-          
-              />
-              <TextField
+                 <TextField
                 variant="outlined"
                 margin="normal"
                 required
@@ -155,13 +190,78 @@ export default function Storeform() {
                 onChange={(e) => setMaxshoppers(e.target.value)}
              
               />
-                    
+              {/* <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="retailer"
+                label="TARGET SPEND"
+                name="TARGETSPEND"
+                autoComplete=""
+                autoFocus
+                onChange={(e) => setTargetspend(e.target.value)}
+            
+              /> */}
+           
+            
+          
+           <FormControl variant="outlined"    margin="normal"  required fullWidth  className={classes.formControl}>
+        <InputLabel  id="demo-simple-select-outlined-label">TARGET SPEND</InputLabel>
+        <Select
+          labelId="demo-simple-select-outlined-label"
+          id="demo-simple-select-outlined"
+          // value={TARGET}
+          onChange={(e)=>setTargetspend(e.target.value)}
+          label="TARGET SPEND"
+         
+        >
+          <MenuItem value="" fullWidth>
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+        </Select>
+      </FormControl>
    
        
+
+      <FormControl variant="outlined"    margin="normal"  required fullWidth  className={classes.formControl}>
+        <InputLabel  id="demo-simple-select-outlined-label">CASHBACK OFFER</InputLabel>
+        <Select
+          labelId="demo-simple-select-outlined-label"
+          id="demo-simple-select-outlined"
+          // value={age}
+          onChange={(e)=>setCashbackoffer(e.target.value)}
+          label="CASHBACK OFFER"
+         
+        >
+          <MenuItem value="" fullWidth>
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+        </Select>
+      </FormControl>
+   
+
               {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
+            <div className="plbtn">
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                  onClick={()=>history.push("templates")}
+              >
+                Back To Templates
+              </Button>
               <Button
                 type="submit"
                 fullWidth
@@ -170,8 +270,9 @@ export default function Storeform() {
                 className={classes.submit}
                 //   onClick={loginauth}
               >
-                SUBMIT
+                Save Templates
               </Button>
+              </div>
               <Grid container>
                 {/* <Grid item xs>
                 <Link href="#" variant="body2">
