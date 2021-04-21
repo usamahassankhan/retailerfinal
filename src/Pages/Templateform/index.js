@@ -113,13 +113,16 @@ export default function Storeform() {
   };
     const sendtemplate = (e) => {
         e.preventDefault()
-        db.collection("template").doc(myid).set({
+        // db.collection("template").doc(myid).set({
+          db.collection("template").doc(plantemplateid).set({
+          // db.collection("template").add({
           targetSpend,
           cashbackoffer,
           
           maxshoppers,
           plantemplateid,
-          plantemplatename
+          plantemplatename,
+          id:localStorage.getItem('myid')
       })
       .then(() => {
           console.log("Document successfully written!");
@@ -219,9 +222,11 @@ export default function Storeform() {
           <MenuItem value="" fullWidth>
             <em>None</em>
           </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          <MenuItem value={200}>200$</MenuItem>
+          <MenuItem value={250}>250$</MenuItem>
+          <MenuItem value={350}>350$</MenuItem>
+          <MenuItem value={550}>550$</MenuItem>
+          <MenuItem value={700}>700$</MenuItem>
         </Select>
       </FormControl>
    
@@ -240,9 +245,12 @@ export default function Storeform() {
           <MenuItem value="" fullWidth>
             <em>None</em>
           </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          <MenuItem value={0.025}>2.5%</MenuItem>
+          <MenuItem value={0.027}>2.7%</MenuItem>
+          <MenuItem value={0.032}>3.2%</MenuItem>
+          <MenuItem value={0.035}>3.5%</MenuItem>
+          
+          <MenuItem value={0.04}>4%</MenuItem>
         </Select>
       </FormControl>
    

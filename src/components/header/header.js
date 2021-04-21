@@ -5,17 +5,18 @@
 import React, { Component } from "react";
 import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
 MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon } from "mdbreact";
-import { BrowserRouter as Router,NavLink } from 'react-router-dom';
+import { BrowserRouter as Router,NavLink ,useHistory} from 'react-router-dom';
 import logo from './../../assets/ibuy_logo.PNG';
 import { auth } from "../../Firebase/Firebase";
 import './index.css';
+import { withRouter } from "react-router-dom";
 import {  Redirect } from 'react-router-dom';
 class NavbarPage extends Component {
 state = {
   isOpen: false,
   mod:false
 };
-
+// const history=useHistory();
 toggleCollapse = () => {
   this.setState({ isOpen: !this.state.isOpen });
 }
@@ -25,6 +26,7 @@ auth.signOut().then(() => {
  console.log("log out success")
 }).catch((error) => {
   alert("error",error)
+  console.log("error",error)
   // An error happened.
 });
 // localStorage.setItem("rememberMe",false);
@@ -33,9 +35,22 @@ localStorage.clear();
 
 // }
 
- window.location.reload(); 
-{/* <Redirect to='/'/>; */}
+//  window.location.reload(); 
+ 
+//  <Redirect to='/'/>;
+//  window.location.reload(); 
+// history.push('/')
 }
+
+
+
+// setTimeout(() => {
+//   auth.signOut().then(() => {
+//     console.log("log out success")
+//    })
+// },3000);
+
+
 
 render() {
   return (
@@ -58,6 +73,8 @@ render() {
               <NavLink to="./storeform">Create Store</NavLink>
             
             </MDBNavItem> */}
+              {localStorage.getItem("rememberMe")?(
+                <>
             <MDBNavItem activeClassName='active'>
               <NavLink to="./templates">Templates</NavLink>
               {/* <a href="./templates"  className="MAINHEAD1">Templates</a> */}
@@ -66,6 +83,7 @@ render() {
               <NavLink to="./plans">Plans</NavLink>
               {/* <a href="./plans"  className="MAINHEAD1">Plans</a> */}
             </MDBNavItem>
+            </>):(null)}
             {/* <MDBNavItem activeClassName="active">
               
               <a href="./planform"  className="MAINHEAD1">Create Plan</a>
@@ -95,7 +113,7 @@ render() {
             {localStorage.getItem("rememberMe")?(
                <MDBNavItem activeClassName="active">
                {/* <NavLink to="/" onClick={()=>this.setState({mod:!this.state.mod})}>Logout</NavLink> */}
-               <NavLink to="/"  refresh="true" onClick={()=>this.logoutfnc()}>Logout</NavLink>
+               <NavLink to="./"  refresh="true" onClick={()=>this.logoutfnc()}>Logout</NavLink>
                {/* <a href="./"  className="MAINHEAD1">Login</a> */}
              </MDBNavItem>
             )
@@ -123,5 +141,5 @@ render() {
     );
   }
 }
-
-export default NavbarPage;
+export default withRouter(NavbarPage);
+// export default NavbarPage;

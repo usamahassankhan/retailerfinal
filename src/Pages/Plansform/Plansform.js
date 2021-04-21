@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import plan from "./../../images/store.jpg";
 import Select from '@material-ui/core/Select';
-import { auth } from "../../Firebase/Firebase";
+import db from "../../Firebase/Firebase";
 import { useHistory } from "react-router-dom";
 // import "./index.css";
 import MenuItem from '@material-ui/core/MenuItem';
@@ -84,21 +84,65 @@ const useStyles = makeStyles((theme) => ({
 export default function Storeform() {
   const classes = useStyles();
   const history = useHistory();
-
-  const [targetSpend, setTargetspend] = useState();
-  const [cashbackoffer, setCashbackoffer] = useState();
-  const [maxshoppers, setMaxshoppers] = useState();
-  const [planId, setPlanId] = useState();
+  const [retailerpartnetname,setretailerpartnetname] = useState();
+  const [bannername,setbannername] = useState();
+  const [storenumber,setstorenumber] = useState();
+  const [storeid,setstoreid] = useState();
+  const [storeaddressline1,setstoreaddressline1] = useState();
+  const [storeaddressline2,setstoreaddressline2] = useState();
+  const [storecity,setstorecity] = useState();
+  const [storestate,setstorestate] = useState();
+  const [storepostalcode,setstorepostalcode] = useState();
+  const [planid,setplanid] = useState();
+  const [Planstartdate,setPlanstartdate] = useState();
+  const [Planendtdate,setPlanenddate] = useState();
+  // const [targetSpend, setTargetspend] = useState();
+  // const [cashbackoffer, setCashbackoffer] = useState();
+  // const [maxshoppers, setMaxshoppers] = useState();
+  // const [planId, setPlanId] = useState();
 
 
   console.log(
-    targetSpend,
-    cashbackoffer,
+    retailerpartnetname,
+    bannername,
+    storenumber,
+    storeid,
+    storeid,
+    storeaddressline1,
+    storeaddressline2,
+    storecity,
+    storestate,
+    storepostalcode,
+    planid,
+    Planstartdate,
+    Planendtdate
     
-    maxshoppers,
-    planId,
-  
   );
+  const sendplan = (e) => {
+    e.preventDefault()
+    db.collection("planSummary").doc(localStorage.getItem('myid')).update({
+      retailerpartnetname:retailerpartnetname,
+      banner:bannername,
+      storenumber:storenumber,
+      storeid: storeid, 
+      storeaddressline1:storeaddressline1,
+      storeaddressline2:storeaddressline2,
+      storecity:storecity,
+      storestate:storestate,
+      storepostalcode:storepostalcode,
+      // planid:planid,
+      planstartdate:Planstartdate,
+      planenddate:Planendtdate,
+      // id:localStorage.getItem('myid')
+  })
+  .then(() => {
+      console.log("Document successfully written!");
+  })
+  .catch((error) => {
+      console.error("Error writing document: ", error);
+  });
+};
+
 
   const [open, setOpen] = React.useState(false);
   const [age, setAge] = React.useState('');
@@ -152,7 +196,7 @@ export default function Storeform() {
                 name="ID"
                 autoComplete=""
                 autoFocus
-                onChange={(e) => setPlanId(e.target.value)}
+                onChange={(e) => setretailerpartnetname(e.target.value)}
                 SelectProps={{
                     // className: classes.selectRoot,
                     classes: {
@@ -172,7 +216,7 @@ export default function Storeform() {
                 name="ID"
                 autoComplete=""
                 autoFocus
-                onChange={(e) => setPlanId(e.target.value)}
+                onChange={(e) => setbannername(e.target.value)}
                 SelectProps={{
                     // className: classes.selectRoot,
                     classes: {
@@ -193,7 +237,7 @@ export default function Storeform() {
                 name="ID"
                 autoComplete=""
                 autoFocus
-                onChange={(e) => setPlanId(e.target.value)}
+                onChange={(e) => setstorenumber(e.target.value)}
                 SelectProps={{
                     // className: classes.selectRoot,
                     classes: {
@@ -213,7 +257,7 @@ export default function Storeform() {
                 name="ID"
                 autoComplete=""
                 autoFocus
-                onChange={(e) => setPlanId(e.target.value)}
+                onChange={(e) => setstoreid(e.target.value)}
                 SelectProps={{
                     // className: classes.selectRoot,
                     classes: {
@@ -233,7 +277,7 @@ export default function Storeform() {
                 name="ID"
                 autoComplete=""
                 autoFocus
-                onChange={(e) => setPlanId(e.target.value)}
+                onChange={(e) => setstoreaddressline1(e.target.value)}
                 SelectProps={{
                     // className: classes.selectRoot,
                     classes: {
@@ -252,7 +296,7 @@ export default function Storeform() {
               name="ID"
               autoComplete=""
               autoFocus
-              onChange={(e) => setPlanId(e.target.value)}
+              onChange={(e) => setstoreaddressline2(e.target.value)}
               SelectProps={{
                 // className: classes.selectRoot,
                 classes: {
@@ -272,7 +316,7 @@ export default function Storeform() {
                 name="ID"
                 autoComplete=""
                 autoFocus
-                onChange={(e) => setPlanId(e.target.value)}
+                onChange={(e) => setstorecity(e.target.value)}
                 SelectProps={{
                     // className: classes.selectRoot,
                     classes: {
@@ -292,7 +336,7 @@ export default function Storeform() {
                 name="ID"
                 autoComplete=""
                 autoFocus
-                onChange={(e) => setPlanId(e.target.value)}
+                onChange={(e) => setstorestate(e.target.value)}
                 SelectProps={{
                     // className: classes.selectRoot,
                     classes: {
@@ -312,7 +356,7 @@ export default function Storeform() {
                 name="ID"
                 autoComplete=""
                 autoFocus
-                onChange={(e) => setPlanId(e.target.value)}
+                onChange={(e) => setstorepostalcode(e.target.value)}
                 SelectProps={{
                     // className: classes.selectRoot,
                     classes: {
@@ -322,7 +366,7 @@ export default function Storeform() {
                   }}
                 className={classes.submit}
               />
-            <TextField
+            {/* <TextField
                 variant="outlined"
                 margin="normal"
                 required
@@ -332,7 +376,7 @@ export default function Storeform() {
                 name="ID"
                 autoComplete=""
                 autoFocus
-                onChange={(e) => setPlanId(e.target.value)}
+                onChange={(e) => setplanid(e.target.value)}
                 SelectProps={{
                     // className: classes.selectRoot,
                     classes: {
@@ -341,7 +385,7 @@ export default function Storeform() {
                     }
                   }}
                 className={classes.submit}
-              />
+              /> */}
                         <TextField
                 variant="outlined"
                 margin="normal"
@@ -353,7 +397,7 @@ export default function Storeform() {
                 id="planstartdate"
                 defaultValue="2021-05-21"
                 autoComplete="date"
-                // onChange={(e) => setPlanstartdate(e.target.value)}
+                onChange={(e) => setPlanstartdate(e.target.value)}
                 SelectProps={{
                     // className: classes.selectRoot,
                     classes: {
@@ -374,7 +418,7 @@ export default function Storeform() {
                 id="planenddate"
                 defaultValue="2021-05-21"
                 autoComplete="date"
-                // onChange={(e) => setPlanstartdate(e.target.value)}
+                onChange={(e) => setPlanenddate(e.target.value)}
                 SelectProps={{
                     // className: classes.selectRoot,
                     classes: {
@@ -465,9 +509,9 @@ export default function Storeform() {
                     }
                   }}
                 className={classes.submit1}
-                //   onClick={loginauth}
+                  onClick={sendplan}
               >
-                Save Templates
+                Save Plan
               </Button>
               </div>
               <Grid container>
