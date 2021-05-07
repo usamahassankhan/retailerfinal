@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import plan from "./../../images/store.jpg";
 import Select from '@material-ui/core/Select';
-import db from "../../Firebase/Firebase";
+import db, { storage } from "../../Firebase/Firebase";
 import { useHistory } from "react-router-dom";
 // import "./index.css";
 import MenuItem from '@material-ui/core/MenuItem';
@@ -79,6 +79,13 @@ const useStyles = makeStyles((theme) => ({
         width:"90%"
       },
   },
+  submited: {
+    margin: theme.spacing(3, 1, 2),
+    width: "43%",
+    ['@media (max-width:1000px)'] : { // eslint-disable-line no-useless-computed-key
+        width:"90%"
+      },
+  },
 }));
 
 export default function Storeform() {
@@ -96,12 +103,35 @@ export default function Storeform() {
   const [planid,setplanid] = useState();
   const [Planstartdate,setPlanstartdate] = useState();
   const [Planendtdate,setPlanenddate] = useState();
+  const [profilepicture,setprofilepicture] = useState();
+  const [retailerpicture,setretailerpicture] = useState();
+  const [longitude,setlongitude] = useState();
+  const [latitude,setlatitude]=useState();
   // const [targetSpend, setTargetspend] = useState();
   // const [cashbackoffer, setCashbackoffer] = useState();
   // const [maxshoppers, setMaxshoppers] = useState();
   // const [planId, setPlanId] = useState();
 
-
+// const handleuplaod=(e)=>{
+//   e.preventDefault()
+//   const uploadtask=storage.ref(`retailerprofile/${profilepicture.name}`).put(profilepicture);
+//   uploadtask.on(
+//     "state_changed",
+//     snapshot=>{},
+//     error=>{
+//       console.log(error);
+//     },
+//     ()=>{
+//       storage.ref("images")
+//       .child(profilepicture.name)
+//       .getDownloadURL()
+//       .then(url=>{
+//         console.log(url)
+//       });
+//     }
+    
+//   );
+// }
   console.log(
     retailerpartnetname,
     bannername,
@@ -118,9 +148,51 @@ export default function Storeform() {
     Planendtdate
     
   );
-  const sendplan = (e) => {
+  console.log("profilepicture",profilepicture)
+
+const setimagetostore=(e)=>{
+  e.preventDefault()
+  const uploadtask=storage.ref(`retailerprofile/${profilepicture.name}`).put(profilepicture);
+  uploadtask.on(
+    "state_changed",
+    snapshot=>{},
+    error=>{
+      console.log(error);
+    },
+    ()=>{
+      storage.ref("retailerprofile")
+      .child(profilepicture.name)
+      .getDownloadURL()
+      .then(url=>{
+        console.log(url)
+        setretailerpicture(url)
+      });
+    }
+    
+  );
+}
+
+  const sendplan = async(e) => {
+
+
+
+
+
+
+
     e.preventDefault()
-    db.collection("planSummary").doc(localStorage.getItem('myid')).update({
+   
+
+
+
+
+
+
+
+
+
+    // db.collection("planSummary").doc(localStorage.getItem('myid')).update({
+       await db.collection("planSummary").doc(localStorage.getItem("plantemplateid")).update({
       retailerpartnetname:retailerpartnetname,
       banner:bannername,
       storenumber:storenumber,
@@ -133,6 +205,10 @@ export default function Storeform() {
       // planid:planid,
       planstartdate:Planstartdate,
       planenddate:Planendtdate,
+    
+      profilepicture:retailerpicture,
+      logitude:longitude,
+      latitude:latitude
       // id:localStorage.getItem('myid')
   })
   .then(() => {
@@ -141,6 +217,35 @@ export default function Storeform() {
   .catch((error) => {
       console.error("Error writing document: ", error);
   });
+
+console.log(retailerpicture,"dadasdasdasd")
+// create store
+    // db.collection("planSummary").doc(localStorage.getItem('myid')).update({
+      await  db.collection("store").doc(localStorage.getItem("plantemplateid")).set({
+        retailerpartnetname:retailerpartnetname,
+        banner:bannername,
+        storenumber:storenumber,
+        storeid: storeid, 
+        storeaddressline1:storeaddressline1,
+        storeaddressline2:storeaddressline2,
+        storecity:storecity,
+        storestate:storestate,
+        storepostalcode:storepostalcode,
+        // planid:planid,
+        planstartdate:Planstartdate,
+        planenddate:Planendtdate,
+        id:localStorage.getItem('myid')
+    })
+    .then(() => {
+        console.log("Document successfully written!");
+    })
+    .catch((error) => {
+        console.error("Error writing document: ", error);
+    });
+
+
+
+
 };
 
 
@@ -185,7 +290,7 @@ export default function Storeform() {
             <Typography component="h1" variant="h5">
             Create New Plan
             </Typography>
-            <form className={classes.form} noValidate>
+            <form className={classes.form}   >
             <TextField
                 variant="outlined"
                 margin="normal"
@@ -306,10 +411,50 @@ export default function Storeform() {
               }}
             className={classes.submit}
             />
+             <TextField
+              variant="outlined"
+              margin="normal"
+              required
+            //   fullWidth
+              id="longitude"
+              label="LONGITUDE"
+              name="longitude"
+              autoComplete=""
+              autoFocus
+              onChange={(e) => setlongitude(e.target.value)}
+              SelectProps={{
+                // className: classes.selectRoot,
+                classes: {
+                //   root: classes.selectRoot,
+                  input: classes.submit
+                }
+              }}
+            className={classes.submit}
+            />
+             <TextField
+              variant="outlined"
+              margin="normal"
+              required
+            //   fullWidth
+              id="latitude"
+              label="LATITUDE"
+              name="latitide"
+              autoComplete=""
+              autoFocus
+              onChange={(e) => setlatitude(e.target.value)}
+              SelectProps={{
+                // className: classes.selectRoot,
+                classes: {
+                //   root: classes.selectRoot,
+                  input: classes.submit
+                }
+              }}
+            className={classes.submit}
+            />
                 <TextField
                 variant="outlined"
                 margin="normal"
-                required
+                required={true}
                 // fullWidth
                 id="planname"
                 label="STORE CITY"
@@ -395,7 +540,7 @@ export default function Storeform() {
                 label="Plan Start Date"
                 type="date"
                 id="planstartdate"
-                defaultValue="2021-05-21"
+              
                 autoComplete="date"
                 onChange={(e) => setPlanstartdate(e.target.value)}
                 SelectProps={{
@@ -405,6 +550,7 @@ export default function Storeform() {
                       input: classes.submit
                     }
                   }}
+                  InputLabelProps={{ shrink: true }} 
                 className={classes.submit}
               />
                                 <TextField
@@ -412,12 +558,12 @@ export default function Storeform() {
                 margin="normal"
                 required
                 // fullWidth
-                name="planstartdate"
+                name="planenddate"
                 label="Plan End Date"
                 type="date"
                 id="planenddate"
-                defaultValue="2021-05-21"
-                autoComplete="date"
+                // defaultValue="2021-05-21"
+                // autoComplete="date"
                 onChange={(e) => setPlanenddate(e.target.value)}
                 SelectProps={{
                     // className: classes.selectRoot,
@@ -426,7 +572,35 @@ export default function Storeform() {
                       input: classes.submit
                     }
                   }}
+                  InputLabelProps={{ shrink: true }} 
                 className={classes.submit}
+              />
+ {/* <img src={profilepicture}/> */}
+              {/* img insert */}
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                // fullWidth
+                name="profilepicture"
+                label="please insert profile picture"
+                type="file"
+                id="profilepicture"
+                // defaultValue="2021-05-21"
+                // autoComplete="date"
+                // onChange={(e) => setprofilepicture(URL.createObjectURL(e.target.files[0]))}
+                  onChange={(e) => setprofilepicture(e.target.files[0])}
+                SelectProps={{
+                    // className: classes.selectRoot,
+                    classes: {
+                    //   root: classes.selectRoot,
+                      input: classes.submited
+                    }
+                  }}
+                  InputLabelProps={{ shrink: true }} 
+                className={classes.submited}
+               
+               
               />
       
 {/*    
@@ -478,6 +652,10 @@ export default function Storeform() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
+            <Button
+              
+            
+            onClick={(e)=>setimagetostore(e)} style={{marginTop:"0px"}}>please click to upload choosen image</Button>
             <div className="pl1btn">
               <Button
                 type="submit"
@@ -509,10 +687,13 @@ export default function Storeform() {
                     }
                   }}
                 className={classes.submit1}
-                  onClick={sendplan}
+                  onClick={(e)=>sendplan(e)}
+                  // onClick={(e)=>handleuplaod(e)}
+                
               >
                 Save Plan
               </Button>
+              
               </div>
               <Grid container>
                 {/* <Grid item xs>

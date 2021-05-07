@@ -153,7 +153,7 @@ export default function Storeform() {
             <Typography component="h1" variant="h5">
             Create New Template
             </Typography>
-            <form className={classes.form} noValidate onSubmit={sendtemplate}>
+            <form className={classes.form} Validate onSubmit={sendtemplate}>
             <TextField
                 variant="outlined"
                 margin="normal"

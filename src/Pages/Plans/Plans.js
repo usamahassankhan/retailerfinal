@@ -19,6 +19,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import './Plans.css';
 import db from "../../Firebase/Firebase";
@@ -277,7 +278,7 @@ console.log(tabledata)
       // console.log("new",newList)
     
     
-      db.collection("planSummary").doc(selected[0]).delete().then(() => {
+      db.collection("planSummary").doc(selected).delete().then(() => {
         console.log("Document successfully deleted!");
         window.location.reload();
     }).catch((error) => {
@@ -294,7 +295,7 @@ console.log(tabledata)
   }
   
   const rows = 
-  tabledata.map((a)=>(createData(a.team1.id,a.team1.banner, a.team1.plantemplatename, a.team1.storenumber, a.team1.storeaddressline1+a.team1.storeaddressline2, a.team1.planstartdate, a.team1.planenddate,a.team1.spendrange,a.team1.cashbackrange,a.team1.maxcustomer,"approved")),);
+  tabledata.map((a)=>(createData(a.team1.plantemplateid,a.team1.banner, a.team1.plantemplatename, a.team1.storenumber, a.team1.storeaddressline1+a.team1.storeaddressline2, a.team1.planstartdate, a.team1.planenddate,a.team1.spendrange,a.team1.cashbackrange,a.team1.maxcustomer,"approved")),);
 
     // createData('Cupcake', 305, 3.7, 67, 4.3, 4.3,4.3,4.3,4.3,4.5),
     // createData('Cupcake', 305, 3.7, 67, 4.3, 4.3,4.3,4.3,4.3,4.5),
@@ -517,7 +518,7 @@ console.log(tabledata)
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-//   const [dense, setDense] = React.useState(false);
+
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -526,33 +527,27 @@ console.log(tabledata)
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
+ 
 
   const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
+    // const selectedIndex = selected.indexOf(id);
+    // let newSelected = [];
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
+    // if (selectedIndex === -1) {
+    //   newSelected = newSelected.concat(selected, id);
+    // } else if (selectedIndex === 0) {
+    //   newSelected = newSelected.concat(selected.slice(1));
+    // } else if (selectedIndex === selected.length - 1) {
+    //   newSelected = newSelected.concat(selected.slice(0, -1));
+    // } else if (selectedIndex > 0) {
+    //   newSelected = newSelected.concat(
+    //     selected.slice(0, selectedIndex),
+    //     selected.slice(selectedIndex + 1),
+    //   );
+    // }
 
-    setSelected(newSelected);
+    // setSelected(newSelected);
+    setSelected(id);
   };
   console.log("select",selected)
   const handleClose = () => {
@@ -579,7 +574,7 @@ const history=useHistory();
 const [open, setOpen] = React.useState(false);
   return (
     <div className={classes.root} className="wao">
-      <Paper className={classes.paper}>
+        {rows.length >0 ? (<Paper className={classes.paper}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
@@ -594,7 +589,7 @@ const [open, setOpen] = React.useState(false);
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
+              // onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
@@ -654,13 +649,13 @@ const [open, setOpen] = React.useState(false);
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
-      </Paper>
-      {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      /> */}
+      </Paper>):(( <div className={classes.root}>
+      <LinearProgress />
+      <LinearProgress color="secondary" />
+    </div>))}
+  
       <div className="templatebtn"> 
-        <button onClick={()=>setOpen(true)}>Delete Plans </button>
+        <button disabled={selected.length >0 ?false:true}  onClick={()=>setOpen(true)}>Delete Plans </button>
         <button>Edit Plans </button>
 
       </div>

@@ -20,6 +20,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import db from "../../Firebase/Firebase";
 import './index.css';
 import { matchPath, useHistory } from 'react-router-dom';
@@ -28,6 +29,7 @@ import Modal from '@material-ui/core/Modal';
 
 
 export default function EnhancedTable() {
+
   const [tabledata, settabledata] = useState([]);
   const [selectedrow, setSelectedrow] = useState([]);
   const [storedata,setstoredata]=useState([]);
@@ -223,6 +225,14 @@ console.log("storedata",storedata)
       width: '100%',
 
     },
+   
+      root1: {
+        width: '100%',
+        '& > * + *': {
+          marginTop: theme.spacing(2),
+        },
+      },
+
     paper: {
       width: '100%',
       marginBottom: theme.spacing(2),
@@ -356,13 +366,15 @@ if(localStorage.getItem("myid")){
 console.log("storedata",storedata)
   const useTemplate=async ()=>{
 
-    await db.collection("planSummary").doc(localStorage.getItem("myid")).set({
+    // await db.collection("planSummary").doc(localStorage.getItem("myid")).set({
+      await db.collection("planSummary").doc(selectedrow.PlanTemplateid).set({
      id:selectedrow.id,
 plantemplatename:selectedrow.PlanTemplateName,
 plantemplateid:selectedrow.PlanTemplateid,
 spendrange:selectedrow.Spendrange,
 cashbackrange:selectedrow.cashbackrange,
 maxcustomer:selectedrow.maxcustomer,
+
 //  retailerpartnername:storedata.name,
 //  address:storedata.address,
 //  planstartdate:storedata.planstartdate,
@@ -376,7 +388,9 @@ maxcustomer:selectedrow.maxcustomer,
   })
   .then(() => {
       console.log("Document successfully written!");
+      localStorage.setItem("plantemplateid",selectedrow.PlanTemplateid)
       history.push("/planform")
+     
   })
   .catch((error) => {
       console.error("Error writing document: ", error);
@@ -450,16 +464,18 @@ setSelected(name)
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, renderRows().length - page * rowsPerPage);
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
-
+console.log("rows",renderRows().length)
   return (
     <div className={classes.root} className="wao">
-      <Paper className={classes.paper}>
+    {renderRows().length >0 ? ( <Paper className={classes.paper}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
+        {renderRows().length >0 ?        
+      ( 
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            // size={dense ? 'small' : 'medium'}
+           
             size={'medium'}
             aria-label="enhanced table"
           >
@@ -472,7 +488,7 @@ setSelected(name)
               onRequestSort={handleRequestSort}
               rowCount={renderRows().length}
             />
-            <TableBody>
+        <TableBody>
               {stableSort(renderRows(), getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
@@ -495,9 +511,7 @@ setSelected(name)
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      {/* <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.id.substring(0,3)}
-                      </TableCell> */}
+                
                       <TableCell component="th" id={labelId} scope="row" padding="none">
                         {row.PlanTemplateName}
                       </TableCell>
@@ -514,7 +528,7 @@ setSelected(name)
                 </TableRow>
               )}
             </TableBody>
-          </Table>
+          </Table>):(<div style={{textAlign:"center"}}><h1>there is no template please create a new one</h1></div>)}
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
@@ -525,15 +539,15 @@ setSelected(name)
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
-      </Paper>
-      {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      /> */}
+      </Paper>):( <div className={classes.root}>
+      <LinearProgress />
+      <LinearProgress color="secondary" />
+    </div>)}
+
       <div className="templatebtn">
-        {/* <button onClick={() => setOpen(true)}>Delete Template </button> */}
-        <button onClick={() => setOpen(true)}>Delete Template </button>
-        <button onClick={useTemplate}>Use Template </button>
+      
+        <button  disabled={selected.length>0? false:true} onClick={() => setOpen(true)}>Delete Template </button>
+       {selected.length>0 ? <button   onClick={useTemplate}>Use Template </button>: <button  disabled  onClick={useTemplate}>Use Template </button>}
 
       </div>
       <div className="templatelast">
