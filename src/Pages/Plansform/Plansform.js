@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,30 +13,29 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import plan from "./../../images/store.jpg";
-import Select from '@material-ui/core/Select';
+import Select from "@material-ui/core/Select";
 import db, { storage } from "../../Firebase/Firebase";
 import { useHistory } from "react-router-dom";
 // import "./index.css";
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import './Plansform.css'
-import FormControl from '@material-ui/core/FormControl';
-import { sizing } from '@material-ui/system';
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
+import "./Plansform.css";
+import FormControl from "@material-ui/core/FormControl";
+import { sizing } from "@material-ui/system";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { ScreenLockLandscapeRounded } from "@material-ui/icons";
+
 const useStyles = makeStyles((theme) => ({
   // root: {
   //   height: "50vh",
   // },
   input: {
- 
     width: 240,
-    paddingRight:10
+    paddingRight: 10,
   },
   input2: {
- 
     width: 250,
-
   },
- 
 
   image: {
     // backgroundImage: 'url(https://source.unsplash.com/random)',
@@ -51,15 +50,15 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     margin: theme.spacing(0, 4),
-    marginTop:40,
+    marginTop: 40,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor:"#094457",
-    color:"white"
+    backgroundColor: "#094457",
+    color: "white",
   },
   // formControl: {
   //   margin: theme.spacing(1),
@@ -75,182 +74,206 @@ const useStyles = makeStyles((theme) => ({
   submit1: {
     margin: theme.spacing(3, 1, 2),
     width: "43%",
-    ['@media (max-width:1000px)'] : { // eslint-disable-line no-useless-computed-key
-        width:"90%"
-      },
+    ["@media (max-width:1000px)"]: {
+      // eslint-disable-line no-useless-computed-key
+      width: "90%",
+    },
   },
   submited: {
     margin: theme.spacing(3, 1, 2),
     width: "43%",
-    ['@media (max-width:1000px)'] : { // eslint-disable-line no-useless-computed-key
-        width:"90%"
-      },
+    ["@media (max-width:1000px)"]: {
+      // eslint-disable-line no-useless-computed-key
+      width: "90%",
+    },
   },
 }));
 
 export default function Storeform() {
   const classes = useStyles();
   const history = useHistory();
-  const [retailerpartnetname,setretailerpartnetname] = useState();
-  const [bannername,setbannername] = useState();
-  const [storenumber,setstorenumber] = useState();
-  const [storeid,setstoreid] = useState();
-  const [storeaddressline1,setstoreaddressline1] = useState();
-  const [storeaddressline2,setstoreaddressline2] = useState();
-  const [storecity,setstorecity] = useState();
-  const [storestate,setstorestate] = useState();
-  const [storepostalcode,setstorepostalcode] = useState();
-  const [planid,setplanid] = useState();
-  const [Planstartdate,setPlanstartdate] = useState();
-  const [Planendtdate,setPlanenddate] = useState();
-  const [profilepicture,setprofilepicture] = useState();
-  const [retailerpicture,setretailerpicture] = useState();
-  const [longitude,setlongitude] = useState();
-  const [latitude,setlatitude]=useState();
+  const [retailerpartnetname, setretailerpartnetname] = useState();
+  const [bannername, setbannername] = useState();
+  const [storenumber, setstorenumber] = useState();
+  const [storeid, setstoreid] = useState();
+  const [storeaddressline1, setstoreaddressline1] = useState();
+  const [storeaddressline2, setstoreaddressline2] = useState();
+  const [storecity, setstorecity] = useState();
+  const [storestate, setstorestate] = useState();
+  const [storepostalcode, setstorepostalcode] = useState();
+  const [planid, setplanid] = useState();
+  const [Planstartdate, setPlanstartdate] = useState();
+  const [Planendtdate, setPlanenddate] = useState();
+  const [profilepicture, setprofilepicture] = useState();
+  const [retailerpicture, setretailerpicture] = useState();
+  const [longitude, setlongitude] = useState();
+  const [latitude, setlatitude] = useState();
+  const [loader, setloader] = useState(false);
   // const [targetSpend, setTargetspend] = useState();
   // const [cashbackoffer, setCashbackoffer] = useState();
   // const [maxshoppers, setMaxshoppers] = useState();
   // const [planId, setPlanId] = useState();
 
-// const handleuplaod=(e)=>{
-//   e.preventDefault()
-//   const uploadtask=storage.ref(`retailerprofile/${profilepicture.name}`).put(profilepicture);
-//   uploadtask.on(
-//     "state_changed",
-//     snapshot=>{},
-//     error=>{
-//       console.log(error);
-//     },
-//     ()=>{
-//       storage.ref("images")
-//       .child(profilepicture.name)
-//       .getDownloadURL()
-//       .then(url=>{
-//         console.log(url)
-//       });
-//     }
-    
-//   );
-// }
+  // const handleuplaod=(e)=>{
+  //   e.preventDefault()
+  //   const uploadtask=storage.ref(`retailerprofile/${profilepicture.name}`).put(profilepicture);
+  //   uploadtask.on(
+  //     "state_changed",
+  //     snapshot=>{},
+  //     error=>{
+  //       console.log(error);
+  //     },
+  //     ()=>{
+  //       storage.ref("images")
+  //       .child(profilepicture.name)
+  //       .getDownloadURL()
+  //       .then(url=>{
+  //         console.log(url)
+  //       });
+  //     }
+
+  //   );
+  // }
   console.log(
-    retailerpartnetname,
-    bannername,
-    storenumber,
-    storeid,
-    storeid,
-    storeaddressline1,
-    storeaddressline2,
-    storecity,
-    storestate,
-    storepostalcode,
-    planid,
-    Planstartdate,
-    Planendtdate
-    
+    retailerpartnetname?.length,
+    bannername?.length,
+    storenumber?.length,
+    storeid?.length,
+    storeid?.length,
+    storeaddressline1?.length,
+    storeaddressline2?.length,
+    storecity?.length,
+    storestate?.length,
+    storepostalcode?.length,
+    // planid?.length,
+    Planstartdate?.length,
+    Planendtdate?.length,
+    retailerpicture?.length
   );
-  console.log("profilepicture",profilepicture)
+  console.log("profilepicture", profilepicture);
 
-const setimagetostore=(e)=>{
-  e.preventDefault()
-  const uploadtask=storage.ref(`retailerprofile/${profilepicture.name}`).put(profilepicture);
-  uploadtask.on(
-    "state_changed",
-    snapshot=>{},
-    error=>{
-      console.log(error);
-    },
-    ()=>{
-      storage.ref("retailerprofile")
-      .child(profilepicture.name)
-      .getDownloadURL()
-      .then(url=>{
-        console.log(url)
-        setretailerpicture(url)
-      });
+  const setimagetostore = (e) => {
+    e.preventDefault();
+    setprofilepicture(e.target.files[0]);
+    setloader(true);
+
+    const uploadtask = storage
+      // .ref(`retailerprofile/${profilepicture.name}`)
+      .ref(`retailerprofile/${e.target.files[0].name}`)
+      // .put(profilepicture);
+      .put(e.target.files[0]);
+    uploadtask.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => {
+        console.log(error);
+        setloader(false);
+      },
+      () => {
+        storage
+          .ref("retailerprofile")
+          .child(e.target.files[0].name)
+          .getDownloadURL()
+          .then((url) => {
+            console.log(url);
+            setretailerpicture(url);
+            setloader(false);
+          });
+      }
+    );
+  };
+  // useEffect(
+  //   (e) => {
+  //     if (profilepicture) {
+  //       setimagetostore();
+  //     }
+  //   },
+  //   [profilepicture]
+  // );
+
+  const sendplan = async (e) => {
+    e.preventDefault();
+
+    // db.collection("planSummary").doc(localStorage.getItem('myid')).update({
+    if (
+      (retailerpartnetname?.length > 0,
+      bannername?.length > 0,
+      storenumber?.length > 0,
+      storeid?.length > 0,
+      storeid?.length > 0,
+      storeaddressline1?.length > 0,
+      storeaddressline2?.length > 0,
+      storecity?.length > 0,
+      storestate?.length > 0,
+      storepostalcode?.length > 0,
+      // planid?.length,
+      Planstartdate?.length > 0,
+      Planendtdate?.length > 0,
+      retailerpicture?.length > 0)
+    ) {
+      await db
+        .collection("planSummary")
+        .doc(localStorage.getItem("plantemplateid"))
+        .update({
+          retailerpartnetname: retailerpartnetname,
+          banner: bannername,
+          storenumber: storenumber,
+          storeid: storeid,
+          storeaddressline1: storeaddressline1,
+          storeaddressline2: storeaddressline2,
+          storecity: storecity,
+          storestate: storestate,
+          storepostalcode: storepostalcode,
+          // planid:planid,
+          planstartdate: Planstartdate,
+          planenddate: Planendtdate,
+
+          profilepicture: retailerpicture,
+          logitude: longitude,
+          latitude: latitude,
+          // id:localStorage.getItem('myid')
+        })
+        .then(() => {
+          console.log("Document successfully written!");
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+        });
+
+      console.log(retailerpicture, "dadasdasdasd");
+      // create store
+      // db.collection("planSummary").doc(localStorage.getItem('myid')).update({
+      await db
+        .collection("store")
+        .doc(localStorage.getItem("plantemplateid"))
+        .set({
+          retailerpartnetname: retailerpartnetname,
+          banner: bannername,
+          storenumber: storenumber,
+          storeid: storeid,
+          storeaddressline1: storeaddressline1,
+          storeaddressline2: storeaddressline2,
+          storecity: storecity,
+          storestate: storestate,
+          storepostalcode: storepostalcode,
+          // planid:planid,
+          planstartdate: Planstartdate,
+          planenddate: Planendtdate,
+          id: localStorage.getItem("myid"),
+        })
+        .then(() => {
+          console.log("Document successfully written!");
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+        });
+    } else {
+      alert("please insert all filed");
     }
-    
-  );
-}
-
-  const sendplan = async(e) => {
-
-
-
-
-
-
-
-    e.preventDefault()
-   
-
-
-
-
-
-
-
-
-
-    // db.collection("planSummary").doc(localStorage.getItem('myid')).update({
-       await db.collection("planSummary").doc(localStorage.getItem("plantemplateid")).update({
-      retailerpartnetname:retailerpartnetname,
-      banner:bannername,
-      storenumber:storenumber,
-      storeid: storeid, 
-      storeaddressline1:storeaddressline1,
-      storeaddressline2:storeaddressline2,
-      storecity:storecity,
-      storestate:storestate,
-      storepostalcode:storepostalcode,
-      // planid:planid,
-      planstartdate:Planstartdate,
-      planenddate:Planendtdate,
-    
-      profilepicture:retailerpicture,
-      logitude:longitude,
-      latitude:latitude
-      // id:localStorage.getItem('myid')
-  })
-  .then(() => {
-      console.log("Document successfully written!");
-  })
-  .catch((error) => {
-      console.error("Error writing document: ", error);
-  });
-
-console.log(retailerpicture,"dadasdasdasd")
-// create store
-    // db.collection("planSummary").doc(localStorage.getItem('myid')).update({
-      await  db.collection("store").doc(localStorage.getItem("plantemplateid")).set({
-        retailerpartnetname:retailerpartnetname,
-        banner:bannername,
-        storenumber:storenumber,
-        storeid: storeid, 
-        storeaddressline1:storeaddressline1,
-        storeaddressline2:storeaddressline2,
-        storecity:storecity,
-        storestate:storestate,
-        storepostalcode:storepostalcode,
-        // planid:planid,
-        planstartdate:Planstartdate,
-        planenddate:Planendtdate,
-        id:localStorage.getItem('myid')
-    })
-    .then(() => {
-        console.log("Document successfully written!");
-    })
-    .catch((error) => {
-        console.error("Error writing document: ", error);
-    });
-
-
-
-
-};
-
+  };
 
   const [open, setOpen] = React.useState(false);
-  const [age, setAge] = React.useState('');
+  const [age, setAge] = React.useState("");
   const [opened, setOpened] = React.useState(false);
 
   const handleChange = (event) => {
@@ -264,14 +287,14 @@ console.log(retailerpicture,"dadasdasdasd")
   const handleOpened = () => {
     setOpened(true);
   };
-    // const handleOpen = (e) => {
-    //     e.preventDefault()
-    //   setOpen(true);
-    // };
-  
-    // const handleClose = () => {
-    //   setOpened(false);
-    // };
+  // const handleOpen = (e) => {
+  //     e.preventDefault()
+  //   setOpen(true);
+  // };
+
+  // const handleClose = () => {
+  //   setOpened(false);
+  // };
   return (
     <div className="plan1container">
       <div className="plan1-mainheadeing">
@@ -288,13 +311,13 @@ console.log(retailerpicture,"dadasdasdasd")
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-            Create New Plan
+              Create New Plan
             </Typography>
-            <form className={classes.form}   >
-            <TextField
+            <form className={classes.form}>
+              <TextField
                 variant="outlined"
                 margin="normal"
-                required
+                required={true}
                 // fullWidth
                 id="planname"
                 label="RETAILER/PARTNER NAME"
@@ -303,15 +326,15 @@ console.log(retailerpicture,"dadasdasdasd")
                 autoFocus
                 onChange={(e) => setretailerpartnetname(e.target.value)}
                 SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
+                  // className: classes.selectRoot,
+                  classes: {
                     //   root: classes.selectRoot,
-                      input: classes.submit
-                    }
-                  }}
+                    input: classes.submit,
+                  },
+                }}
                 className={classes.submit}
               />
-                  <TextField
+              <TextField
                 variant="outlined"
                 margin="normal"
                 required
@@ -323,15 +346,15 @@ console.log(retailerpicture,"dadasdasdasd")
                 autoFocus
                 onChange={(e) => setbannername(e.target.value)}
                 SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
+                  // className: classes.selectRoot,
+                  classes: {
                     //   root: classes.selectRoot,
-                      input: classes.submit
-                    }
-                  }}
+                    input: classes.submit,
+                  },
+                }}
                 className={classes.submit}
               />
-                  <TextField
+              <TextField
                 variant="outlined"
                 // width="80%"
                 margin="normal"
@@ -344,15 +367,15 @@ console.log(retailerpicture,"dadasdasdasd")
                 autoFocus
                 onChange={(e) => setstorenumber(e.target.value)}
                 SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
+                  // className: classes.selectRoot,
+                  classes: {
                     //   root: classes.selectRoot,
-                      input: classes.submit
-                    }
-                  }}
+                    input: classes.submit,
+                  },
+                }}
                 className={classes.submit}
               />
-                  <TextField
+              <TextField
                 variant="outlined"
                 margin="normal"
                 required
@@ -364,15 +387,15 @@ console.log(retailerpicture,"dadasdasdasd")
                 autoFocus
                 onChange={(e) => setstoreid(e.target.value)}
                 SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
+                  // className: classes.selectRoot,
+                  classes: {
                     //   root: classes.selectRoot,
-                      input: classes.submit
-                    }
-                  }}
+                    input: classes.submit,
+                  },
+                }}
                 className={classes.submit}
               />
-                  <TextField
+              <TextField
                 variant="outlined"
                 margin="normal"
                 required
@@ -384,74 +407,75 @@ console.log(retailerpicture,"dadasdasdasd")
                 autoFocus
                 onChange={(e) => setstoreaddressline1(e.target.value)}
                 SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
+                  // className: classes.selectRoot,
+                  classes: {
                     //   root: classes.selectRoot,
-                      input: classes.submit
-                    }
-                  }}
+                    input: classes.submit,
+                  },
+                }}
                 className={classes.submit}
-              />    <TextField
-              variant="outlined"
-              margin="normal"
-              required
-            //   fullWidth
-              id="planname"
-              label="STORE ADDRESS LINE 2"
-              name="ID"
-              autoComplete=""
-              autoFocus
-              onChange={(e) => setstoreaddressline2(e.target.value)}
-              SelectProps={{
-                // className: classes.selectRoot,
-                classes: {
-                //   root: classes.selectRoot,
-                  input: classes.submit
-                }
-              }}
-            className={classes.submit}
-            />
-             <TextField
-              variant="outlined"
-              margin="normal"
-              required
-            //   fullWidth
-              id="longitude"
-              label="LONGITUDE"
-              name="longitude"
-              autoComplete=""
-              autoFocus
-              onChange={(e) => setlongitude(e.target.value)}
-              SelectProps={{
-                // className: classes.selectRoot,
-                classes: {
-                //   root: classes.selectRoot,
-                  input: classes.submit
-                }
-              }}
-            className={classes.submit}
-            />
-             <TextField
-              variant="outlined"
-              margin="normal"
-              required
-            //   fullWidth
-              id="latitude"
-              label="LATITUDE"
-              name="latitide"
-              autoComplete=""
-              autoFocus
-              onChange={(e) => setlatitude(e.target.value)}
-              SelectProps={{
-                // className: classes.selectRoot,
-                classes: {
-                //   root: classes.selectRoot,
-                  input: classes.submit
-                }
-              }}
-            className={classes.submit}
-            />
-                <TextField
+              />{" "}
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                //   fullWidth
+                id="planname"
+                label="STORE ADDRESS LINE 2"
+                name="ID"
+                autoComplete=""
+                autoFocus
+                onChange={(e) => setstoreaddressline2(e.target.value)}
+                SelectProps={{
+                  // className: classes.selectRoot,
+                  classes: {
+                    //   root: classes.selectRoot,
+                    input: classes.submit,
+                  },
+                }}
+                className={classes.submit}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                //   fullWidth
+                id="longitude"
+                label="LONGITUDE"
+                name="longitude"
+                autoComplete=""
+                autoFocus
+                onChange={(e) => setlongitude(e.target.value)}
+                SelectProps={{
+                  // className: classes.selectRoot,
+                  classes: {
+                    //   root: classes.selectRoot,
+                    input: classes.submit,
+                  },
+                }}
+                className={classes.submit}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                //   fullWidth
+                id="latitude"
+                label="LATITUDE"
+                name="latitide"
+                autoComplete=""
+                autoFocus
+                onChange={(e) => setlatitude(e.target.value)}
+                SelectProps={{
+                  // className: classes.selectRoot,
+                  classes: {
+                    //   root: classes.selectRoot,
+                    input: classes.submit,
+                  },
+                }}
+                className={classes.submit}
+              />
+              <TextField
                 variant="outlined"
                 margin="normal"
                 required={true}
@@ -463,15 +487,15 @@ console.log(retailerpicture,"dadasdasdasd")
                 autoFocus
                 onChange={(e) => setstorecity(e.target.value)}
                 SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
+                  // className: classes.selectRoot,
+                  classes: {
                     //   root: classes.selectRoot,
-                      input: classes.submit
-                    }
-                  }}
+                    input: classes.submit,
+                  },
+                }}
                 className={classes.submit}
               />
-                  <TextField
+              <TextField
                 variant="outlined"
                 margin="normal"
                 required
@@ -483,15 +507,15 @@ console.log(retailerpicture,"dadasdasdasd")
                 autoFocus
                 onChange={(e) => setstorestate(e.target.value)}
                 SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
+                  // className: classes.selectRoot,
+                  classes: {
                     //   root: classes.selectRoot,
-                      input: classes.submit
-                    }
-                  }}
+                    input: classes.submit,
+                  },
+                }}
                 className={classes.submit}
               />
-                  <TextField
+              <TextField
                 variant="outlined"
                 margin="normal"
                 required
@@ -503,15 +527,15 @@ console.log(retailerpicture,"dadasdasdasd")
                 autoFocus
                 onChange={(e) => setstorepostalcode(e.target.value)}
                 SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
+                  // className: classes.selectRoot,
+                  classes: {
                     //   root: classes.selectRoot,
-                      input: classes.submit
-                    }
-                  }}
+                    input: classes.submit,
+                  },
+                }}
                 className={classes.submit}
               />
-            {/* <TextField
+              {/* <TextField
                 variant="outlined"
                 margin="normal"
                 required
@@ -531,7 +555,7 @@ console.log(retailerpicture,"dadasdasdasd")
                   }}
                 className={classes.submit}
               /> */}
-                        <TextField
+              <TextField
                 variant="outlined"
                 margin="normal"
                 required
@@ -540,20 +564,19 @@ console.log(retailerpicture,"dadasdasdasd")
                 label="Plan Start Date"
                 type="date"
                 id="planstartdate"
-              
                 autoComplete="date"
                 onChange={(e) => setPlanstartdate(e.target.value)}
                 SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
+                  // className: classes.selectRoot,
+                  classes: {
                     //   root: classes.selectRoot,
-                      input: classes.submit
-                    }
-                  }}
-                  InputLabelProps={{ shrink: true }} 
+                    input: classes.submit,
+                  },
+                }}
+                InputLabelProps={{ shrink: true }}
                 className={classes.submit}
               />
-                                <TextField
+              <TextField
                 variant="outlined"
                 margin="normal"
                 required
@@ -566,16 +589,16 @@ console.log(retailerpicture,"dadasdasdasd")
                 // autoComplete="date"
                 onChange={(e) => setPlanenddate(e.target.value)}
                 SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
+                  // className: classes.selectRoot,
+                  classes: {
                     //   root: classes.selectRoot,
-                      input: classes.submit
-                    }
-                  }}
-                  InputLabelProps={{ shrink: true }} 
+                    input: classes.submit,
+                  },
+                }}
+                InputLabelProps={{ shrink: true }}
                 className={classes.submit}
               />
- {/* <img src={profilepicture}/> */}
+              {/* <img src={profilepicture}/> */}
               {/* img insert */}
               <TextField
                 variant="outlined"
@@ -589,21 +612,21 @@ console.log(retailerpicture,"dadasdasdasd")
                 // defaultValue="2021-05-21"
                 // autoComplete="date"
                 // onChange={(e) => setprofilepicture(URL.createObjectURL(e.target.files[0]))}
-                  onChange={(e) => setprofilepicture(e.target.files[0])}
+                // onChange={(e) => setprofilepicture(e.target.files[0])}
+                // onChange={(e) => setretailerpicture(e)}
+                onChange={(e) => setimagetostore(e)}
                 SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
+                  // className: classes.selectRoot,
+                  classes: {
                     //   root: classes.selectRoot,
-                      input: classes.submited
-                    }
-                  }}
-                  InputLabelProps={{ shrink: true }} 
+                    input: classes.submited,
+                  },
+                }}
+                InputLabelProps={{ shrink: true }}
                 className={classes.submited}
-               
-               
-              />
-      
-{/*    
+              />{" "}
+              {loader && <CircularProgress size={30} />}
+              {/*    
            
             
           
@@ -627,8 +650,7 @@ console.log(retailerpicture,"dadasdasdasd")
       </FormControl>
    
         */}
-
-      {/* <FormControl variant="outlined"    margin="normal"  required fullWidth  className={classes.formControl}>
+              {/* <FormControl variant="outlined"    margin="normal"  required fullWidth  className={classes.formControl}>
         <InputLabel  id="demo-simple-select-outlined-label">CASHBACK OFFER</InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
@@ -646,54 +668,52 @@ console.log(retailerpicture,"dadasdasdasd")
           <MenuItem value={30}>Thirty</MenuItem>
         </Select>
       </FormControl> */}
-   
-
               {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
-            <Button
-              
-            
-            onClick={(e)=>setimagetostore(e)} style={{marginTop:"0px"}}>please click to upload choosen image</Button>
-            <div className="pl1btn">
-              <Button
-                type="submit"
-                // fullWidth
-                variant="contained"
-                color="primary"
-                SelectProps={{
-                    // className: classes.selectRoot,
-                    classes: {
-                    //   root: classes.selectRoot,
-                      input: classes.submit1
-                    }
-                  }}
-                className={classes.submit1}
-                  onClick={()=>history.push("templates")}
+              {/* <Button
+                onClick={(e) => setimagetostore(e)}
+                style={{ marginTop: "0px" }}
               >
-                Back To Templates
-              </Button>
-              <Button
-                type="submit"
-                // fullWidth
-                variant="contained"
-                color="primary"
-                SelectProps={{
+                please click to upload choosen image
+              </Button> */}
+              <div className="pl1btn">
+                <Button
+                  type="submit"
+                  // fullWidth
+                  variant="contained"
+                  color="primary"
+                  SelectProps={{
                     // className: classes.selectRoot,
                     classes: {
-                    //   root: classes.selectRoot,
-                      input: classes.submit1
-                    }
+                      //   root: classes.selectRoot,
+                      input: classes.submit1,
+                    },
                   }}
-                className={classes.submit1}
-                  onClick={(e)=>sendplan(e)}
+                  className={classes.submit1}
+                  onClick={() => history.push("templates")}
+                >
+                  Back To Templates
+                </Button>
+                <Button
+                  type="submit"
+                  // fullWidth
+                  variant="contained"
+                  color="primary"
+                  SelectProps={{
+                    // className: classes.selectRoot,
+                    classes: {
+                      //   root: classes.selectRoot,
+                      input: classes.submit1,
+                    },
+                  }}
+                  className={classes.submit1}
+                  onClick={(e) => sendplan(e)}
                   // onClick={(e)=>handleuplaod(e)}
-                
-              >
-                Save Plan
-              </Button>
-              
+                >
+                  Save Plan
+                </Button>
               </div>
               <Grid container>
                 {/* <Grid item xs>
